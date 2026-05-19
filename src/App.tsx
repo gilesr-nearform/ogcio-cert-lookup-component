@@ -5,12 +5,17 @@ import { JourneyPage } from './pages/journey/JourneyPage';
 
 export default function App() {
   return (
-    <AppShell>
-      <Routes>
-        <Route path="/" element={<DebugStart />} />
-        <Route path="/:certType" element={<JourneyPage />} />
-        <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
-    </AppShell>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <AppShell>
+            <DebugStart />
+          </AppShell>
+        }
+      />
+      <Route path="/:certType" element={<JourneyPage />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }

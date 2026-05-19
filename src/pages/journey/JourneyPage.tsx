@@ -3,10 +3,10 @@ import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import type { CertRecord, CertType } from '../../types';
 import { AUTHENTICATED_USER } from '../../data/scenarios';
 import {
-  generateReferenceNumber,
   makeInitialJourney,
   type JourneyState,
 } from '../../state/journey';
+import { AppShell } from '../../components/AppShell';
 import { CertLookup } from '../../components/CertLookup';
 import { StepConfirmation } from './StepConfirmation';
 import { StepSubmitted } from './StepSubmitted';
@@ -24,9 +24,11 @@ export function JourneyPage() {
 
   if (!isCertType(certTypeParam)) {
     return (
-      <div>
-        Unknown certificate type. <a href="/">Back to start</a>
-      </div>
+      <AppShell>
+        <div>
+          Unknown certificate type. <a href="/">Back to start</a>
+        </div>
+      </AppShell>
     );
   }
 
@@ -70,7 +72,6 @@ function JourneyController({
   function handleSubmit() {
     setJourney((prev) => ({
       ...prev,
-      referenceNumber: generateReferenceNumber(),
       step: 'submitted',
     }));
   }
@@ -79,30 +80,34 @@ function JourneyController({
     setJourney((prev) => ({ ...prev, step }));
   }
 
+  if (journey.step === 'submitted') {
+    return <StepSubmitted onHome={onExit} />;
+  }
+
   if (journey.step === 'confirmation') {
     return (
-      <StepConfirmation
-        journey={journey}
-        termsAccepted={journey.termsAccepted}
-        onTermsChange={handleTermsChange}
-        onBack={() => backTo('lookup')}
-        onSubmit={handleSubmit}
-      />
+      <AppShell>
+        <StepConfirmation
+          journey={journey}
+          termsAccepted={journey.termsAccepted}
+          onTermsChange={handleTermsChange}
+          onBack={() => backTo('lookup')}
+          onSubmit={handleSubmit}
+        />
+      </AppShell>
     );
   }
 
-  if (journey.step === 'submitted') {
-    return <StepSubmitted journey={journey} onDone={onExit} />;
-  }
-
   return (
-    <CertLookup
-      certType={certType}
-      user={AUTHENTICATED_USER}
-      initialPpsn={initialPpsn}
-      autoSubmit={autoSubmit}
-      onConfirm={handleLookupConfirm}
-      onBack={onExit}
-    />
+    <AppShell>
+      <CertLookup
+        certType={certType}
+        user={AUTHENTICATED_USER}
+        initialPpsn={initialPpsn}
+        autoSubmit={autoSubmit}
+        onConfirm={handleLookupConfirm}
+        onBack={onExit}
+      />
+    </AppShell>
   );
 }

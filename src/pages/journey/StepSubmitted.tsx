@@ -1,76 +1,33 @@
-import {
-  Alert,
-  Button,
-  Heading,
-  Link,
-  Paragraph,
-  SummaryList,
-  SummaryListRow,
-  SummaryListValue,
-} from '@govie-ds/react';
-import { CERT_TYPE_LABEL } from '../../data/content';
-import type { JourneyState } from '../../state/journey';
-
 type Props = {
-  journey: JourneyState;
-  onDone: () => void;
+  onHome: () => void;
 };
 
-export function StepSubmitted({ journey, onDone }: Props) {
-  const record = journey.selectedRecord;
-  const reference = journey.referenceNumber ?? 'CL-2026-104872';
-  const today = new Date().toLocaleDateString('en-IE', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
+const MONO_STACK =
+  '"IBM Plex Mono", ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace';
 
+export function StepSubmitted({ onHome }: Props) {
   return (
-    <div className="flex flex-col gap-2xl max-w-[704px]">
-      <Alert variant="success" title="Your request has been submitted">
-        We’ll send a secure message to your MessagingIE inbox when your
-        certificate is ready to download.
-      </Alert>
-
-      <div className="flex flex-col gap-md">
-        <Heading as="h1">What happens next</Heading>
-        <Paragraph>
-          Expected delivery is within 3 working days. You can return to your
-          Life Events Dashboard at any time to check the status of this
-          request.
-        </Paragraph>
-      </div>
-
-      <SummaryList>
-        <SummaryListRow label="Reference number">
-          <SummaryListValue>{reference}</SummaryListValue>
-        </SummaryListRow>
-        <SummaryListRow label="Submitted">
-          <SummaryListValue>{today}</SummaryListValue>
-        </SummaryListRow>
-        <SummaryListRow label="Certificate type">
-          <SummaryListValue>
-            {record ? CERT_TYPE_LABEL[record.certType] : '—'}
-          </SummaryListValue>
-        </SummaryListRow>
-        <SummaryListRow label="Expected delivery">
-          <SummaryListValue>Within 3 working days</SummaryListValue>
-        </SummaryListRow>
-      </SummaryList>
-
-      <div className="flex flex-col items-start gap-md sm:flex-row sm:items-center sm:gap-xl">
-        <Button variant="primary" onClick={onDone}>
-          Go to Life Events Dashboard
-        </Button>
-        <Link
-          href="/"
-          onClick={(e) => {
-            e.preventDefault();
-            onDone();
-          }}
+    <div
+      className="min-h-screen w-full bg-[#181818] text-white flex items-center px-2xl"
+      style={{ fontFamily: MONO_STACK }}
+    >
+      <div className="flex flex-col gap-2xl max-w-[544px] mx-auto">
+        <div className="flex flex-col gap-lg">
+          <p className="text-2xl font-bold leading-snug">
+            PaymentsIE would handle this step
+          </p>
+          <p className="text-2xl leading-snug">
+            The citizen is handed to PaymentsIE for the transaction.
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={onHome}
+          className="self-start text-base underline underline-offset-4 cursor-pointer hover:text-gray-300"
+          style={{ fontFamily: MONO_STACK }}
         >
-          Start a new request
-        </Link>
+          Return to prototype home
+        </button>
       </div>
     </div>
   );
