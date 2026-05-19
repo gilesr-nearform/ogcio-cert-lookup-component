@@ -44,6 +44,38 @@ const someoneElseMarriage: MarriageRecord = {
   placeOfMarriage: 'Limerick',
 };
 
+export const EXAMPLE_PPSN = '1234567T';
+
+const exampleBirth: BirthRecord = {
+  id: 'b-example-1234567T',
+  certType: 'birth',
+  ppsn: EXAMPLE_PPSN,
+  fullName: 'Cillian James Mitchell',
+  dateOfBirth: '18 March 2025',
+  placeOfBirth: 'Cork University Maternity Hospital',
+};
+
+const exampleMarriage: MarriageRecord = {
+  id: 'm-example-1234567T',
+  certType: 'marriage',
+  ppsn: EXAMPLE_PPSN,
+  fullName: 'Aine Bernadette Doherty',
+  ordinal: 'First',
+  spouseName: 'Liam Joseph Carroll',
+  dateOfMarriage: '12 September 2018',
+  placeOfMarriage: 'Galway',
+};
+
+const exampleDeath: DeathRecord = {
+  id: 'd-example-1234567T',
+  certType: 'death',
+  ppsn: EXAMPLE_PPSN,
+  fullName: 'Patrick Connor Walsh',
+  dateOfBirth: '4 May 1942',
+  dateOfDeath: '17 March 2024',
+  placeOfDeath: 'Mater Misericordiae University Hospital, Dublin',
+};
+
 const aoifeMarriages: MarriageRecord[] = [
   {
     id: 'm-obrien-2008',
@@ -103,6 +135,10 @@ const FIXTURES: Fixture[] = [
     records: [aoifeOwnBirth],
   },
   {
+    matches: (certType, ppsn) => certType === 'birth' && ppsn === EXAMPLE_PPSN,
+    records: [exampleBirth],
+  },
+  {
     matches: (certType, ppsn) =>
       certType === 'marriage' && ppsn === AUTHENTICATED_USER.ppsn,
     records: aoifeMarriages,
@@ -113,8 +149,17 @@ const FIXTURES: Fixture[] = [
     records: [someoneElseMarriage],
   },
   {
+    matches: (certType, ppsn) =>
+      certType === 'marriage' && ppsn === EXAMPLE_PPSN,
+    records: [exampleMarriage],
+  },
+  {
     matches: (certType, ppsn) => certType === 'death' && ppsn === '4421567S',
     records: [maeveDeath],
+  },
+  {
+    matches: (certType, ppsn) => certType === 'death' && ppsn === EXAMPLE_PPSN,
+    records: [exampleDeath],
   },
 ];
 
