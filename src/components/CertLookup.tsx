@@ -46,6 +46,8 @@ export function CertLookup({
 
   const [ppsnValue, setPpsnValue] = useState<string>(() => initialPpsn ?? '');
   const [ppsnError, setPpsnError] = useState<string | null>(null);
+  const [ppsnAutoPopulated, setPpsnAutoPopulated] = useState(false);
+  const [ppsnRevealed, setPpsnRevealed] = useState(false);
   const [selectedRecordId, setSelectedRecordId] = useState<string | null>(null);
   const [singleConfirmed, setSingleConfirmed] = useState(false);
   const [consented, setConsented] = useState(false);
@@ -77,8 +79,17 @@ export function CertLookup({
 
   function useMyPpsn() {
     setPpsnValue(user.ppsn);
+    setPpsnAutoPopulated(true);
+    setPpsnRevealed(false);
     setPpsnError(null);
-    requestAnimationFrame(() => ppsnInputRef.current?.focus());
+  }
+
+  function handlePpsnChange(next: string) {
+    if (ppsnAutoPopulated && next !== user.ppsn) {
+      setPpsnAutoPopulated(false);
+      setPpsnRevealed(false);
+    }
+    setPpsnValue(next);
   }
 
   function handlePpsnBlur() {
@@ -115,6 +126,8 @@ export function CertLookup({
     setConsented(false);
     setPpsnError(null);
     setPpsnValue('');
+    setPpsnAutoPopulated(false);
+    setPpsnRevealed(false);
     requestAnimationFrame(() => ppsnInputRef.current?.focus());
   }
 
@@ -143,14 +156,28 @@ export function CertLookup({
           >
             <InputText
               ref={ppsnInputRef}
-              value={ppsnValue}
-              onChange={(e) => setPpsnValue(e.target.value)}
+              value={
+                ppsnAutoPopulated && !ppsnRevealed
+                  ? '•'.repeat(ppsnValue.length)
+                  : ppsnValue
+              }
+              onChange={(e) => handlePpsnChange(e.target.value)}
               onBlur={handlePpsnBlur}
+              readOnly={ppsnAutoPopulated && !ppsnRevealed}
               disabled={isLoading}
               autoFocus
               autoComplete="off"
               spellCheck={false}
               aria-describedby="ppsn-hint"
+              inputActionButton={
+                ppsnAutoPopulated
+                  ? {
+                      icon: ppsnRevealed ? 'visibility_off' : 'visibility',
+                      onClick: () => setPpsnRevealed((v) => !v),
+                      ariaLabel: ppsnRevealed ? 'Hide PPSN' : 'Show PPSN',
+                    }
+                  : undefined
+              }
             />
           </FormField>
           {showUseMyPpsnLink && !isLoading && (
