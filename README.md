@@ -6,8 +6,8 @@ gov.ie design system.
 
 ## Links
 
+- **Live preview:** https://ogcio-cert-lookup-component.vercel.app
 - **Repository:** https://github.com/gilesr-nearform/ogcio-cert-lookup-component
-- **Live preview:** _(Vercel deployment pending — see Deployment below)_
 
 ## What’s in here
 
