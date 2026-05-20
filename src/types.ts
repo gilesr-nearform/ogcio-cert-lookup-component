@@ -6,8 +6,6 @@ export type AuthUser = {
   email: string;
 };
 
-export type LookupRequester = 'self' | 'someone-else';
-
 type CommonRecord = {
   id: string;
   ppsn: string;
@@ -54,7 +52,5 @@ export type CertContent = {
   pageTitle: string;
   intro: string;
   ppsnHint: string;
-  orderForSomeoneElseLink?: string;
-  orderForMyselfLink?: string;
   feeCents: number;
 };

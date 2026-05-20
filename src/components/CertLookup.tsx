@@ -16,7 +16,6 @@ import type {
   AuthUser,
   CertRecord,
   CertType,
-  LookupRequester,
   MarriageRecord,
 } from '../types';
 import { CERT_CONTENT } from '../data/content';
@@ -34,20 +33,6 @@ type Props = {
   onBack: () => void;
 };
 
-function defaultRequester(certType: CertType): LookupRequester {
-  return certType === 'death' ? 'someone-else' : 'self';
-}
-
-function defaultPpsnFor(
-  certType: CertType,
-  requester: LookupRequester,
-  user: AuthUser,
-): string {
-  if (certType === 'death') return '';
-  if (requester === 'self') return user.ppsn;
-  return '';
-}
-
 export function CertLookup({
   certType,
   user,
@@ -57,15 +42,10 @@ export function CertLookup({
   onBack,
 }: Props) {
   const content = CERT_CONTENT[certType];
-  const showRequesterToggle = certType !== 'death';
+  const showUseMyPpsnLink = certType !== 'death';
 
-  const initialRequester = defaultRequester(certType);
-  const [requester, setRequester] = useState<LookupRequester>(initialRequester);
-  const [ppsnValue, setPpsnValue] = useState<string>(
-    () => initialPpsn ?? defaultPpsnFor(certType, initialRequester, user),
-  );
+  const [ppsnValue, setPpsnValue] = useState<string>(() => initialPpsn ?? '');
   const [ppsnError, setPpsnError] = useState<string | null>(null);
-  const [ppsnRevealed, setPpsnRevealed] = useState(false);
   const [selectedRecordId, setSelectedRecordId] = useState<string | null>(null);
   const [singleConfirmed, setSingleConfirmed] = useState(false);
   const [consented, setConsented] = useState(false);
@@ -73,8 +53,6 @@ export function CertLookup({
   const ppsnInputRef = useRef<HTMLInputElement>(null);
   const { state, showLoadingIndicator, submittedPpsn, lookup, reset } =
     useLookup(certType);
-
-  const ppsnReadOnly = showRequesterToggle && requester === 'self';
 
   useEffect(() => {
     if (!autoSubmit || !initialPpsn) return;
@@ -97,17 +75,10 @@ export function CertLookup({
   const consentVisible = hasSelection;
   const canProceed = hasSelection && consented;
 
-  function toggleRequester() {
-    const next: LookupRequester = requester === 'self' ? 'someone-else' : 'self';
-    setRequester(next);
-    setPpsnRevealed(false);
+  function useMyPpsn() {
+    setPpsnValue(user.ppsn);
     setPpsnError(null);
-    if (next === 'self') {
-      setPpsnValue(user.ppsn);
-    } else {
-      setPpsnValue('');
-      requestAnimationFrame(() => ppsnInputRef.current?.focus());
-    }
+    requestAnimationFrame(() => ppsnInputRef.current?.focus());
   }
 
   function handlePpsnBlur() {
@@ -143,11 +114,8 @@ export function CertLookup({
     setSingleConfirmed(false);
     setConsented(false);
     setPpsnError(null);
-    setPpsnRevealed(false);
-    setPpsnValue(defaultPpsnFor(certType, requester, user));
-    if (!ppsnReadOnly) {
-      requestAnimationFrame(() => ppsnInputRef.current?.focus());
-    }
+    setPpsnValue('');
+    requestAnimationFrame(() => ppsnInputRef.current?.focus());
   }
 
   function handleNext() {
@@ -175,41 +143,25 @@ export function CertLookup({
           >
             <InputText
               ref={ppsnInputRef}
-              value={
-                ppsnReadOnly && !ppsnRevealed
-                  ? '•'.repeat(ppsnValue.length)
-                  : ppsnValue
-              }
+              value={ppsnValue}
               onChange={(e) => setPpsnValue(e.target.value)}
               onBlur={handlePpsnBlur}
-              readOnly={ppsnReadOnly}
               disabled={isLoading}
-              autoFocus={!ppsnReadOnly}
+              autoFocus
               autoComplete="off"
               spellCheck={false}
               aria-describedby="ppsn-hint"
-              inputActionButton={
-                ppsnReadOnly
-                  ? {
-                      icon: ppsnRevealed ? 'visibility_off' : 'visibility',
-                      onClick: () => setPpsnRevealed((v) => !v),
-                      ariaLabel: ppsnRevealed ? 'Hide PPSN' : 'Show PPSN',
-                    }
-                  : undefined
-              }
             />
           </FormField>
-          {showRequesterToggle && !isLoading && (
+          {showUseMyPpsnLink && !isLoading && (
             <Link
               href="#"
               onClick={(e) => {
                 e.preventDefault();
-                toggleRequester();
+                useMyPpsn();
               }}
             >
-              {requester === 'self'
-                ? content.orderForSomeoneElseLink
-                : content.orderForMyselfLink}
+              Use my own PPSN
             </Link>
           )}
         </div>

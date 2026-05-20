@@ -13,9 +13,10 @@ gov.ie design system.
 
 - **Step 1 lookup** with 6 states (initial, loading, single result, multi
   result, not found, service unavailable) driven by a mock API
-- **Per-cert-type defaults** — Birth defaults to "Someone else", Marriage to
-  "Yourself", Death hides the dropdown
-- **Pre-populated PPSN** is masked with an eye-icon toggle
+- **PPSN input pattern**: single empty field, no defaults; Birth and Marriage
+  show a "Use my own PPSN" quick-fill link, Death does not. See
+  [`docs/decisions/0001-ppsn-input-pattern.md`](./docs/decisions/0001-ppsn-input-pattern.md)
+  for the rationale and sources.
 - **`maskName`** utility plus `maskIfNotUser` — the signed-in user’s own name
   passes through unmasked, everyone else is bullet-masked
 - **Step 2 confirmation** of name + email + terms acceptance
@@ -25,13 +26,15 @@ gov.ie design system.
 
 ## Demo PPSNs
 
-In any of the three flows you can enter these to see different responses:
+The PPSN field starts empty for every cert type. Type or paste any of these
+to see different responses (Birth and Marriage also have a "Use my own PPSN"
+link that one-clicks `5612908T` into the field):
 
 | PPSN        | Behaviour                                                       |
 |-------------|-----------------------------------------------------------------|
 | `1234567T`  | Working demo record (single result) for **any** cert type       |
 | `7823641W`  | Birth — Fiadh Rose Murphy (Aoife’s child)                       |
-| `5612908T`  | Marriage — Aoife’s own (multi-result)                           |
+| `5612908T`  | Birth — Aoife’s own; Marriage — Aoife’s own (multi-result)      |
 | `4421567S`  | Death — Maeve Catherine Murphy née Byrne                        |
 | `9087432P`  | Marriage — Cathal Brendan O’Sullivan (single, someone else)     |
 | `1111111X`  | No record found (any cert type)                                 |
@@ -74,14 +77,19 @@ src/
   types.ts       CertType, CertRecord, LookupState, etc.
 ```
 
+## Design & UX decisions
+
+Rationales for the non-obvious product calls live in
+[`docs/decisions/`](./docs/decisions/). These are short, dated docs you can
+hand to a stakeholder before a meeting. Start with
+[0001 — PPSN input pattern](./docs/decisions/0001-ppsn-input-pattern.md).
+
 ## Deployment
 
-The local prototype builds to a static bundle (`npm run build` outputs to
-`dist/`). To put a live preview behind the repo:
-
-1. Connect the GitHub repo to Vercel (Dashboard → Import Project)
-2. Vercel auto-detects Vite; no configuration needed
-3. The live URL will be added to the top of this README once it’s connected
+The repo is connected to Vercel. Pushes to `main` redeploy
+https://ogcio-cert-lookup-component.vercel.app automatically; preview
+URLs are generated for branch pushes. `vercel.json` rewrites all SPA
+routes to `index.html` so deep links like `/birth?ppsn=…` work.
 
 ## Source design
 

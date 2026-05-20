@@ -9,8 +9,6 @@ export const CERT_CONTENT: Record<CertType, CertContent> = {
     intro:
       "Tell us whose certificate you need and we'll take it from there.",
     ppsnHint: SHARED_PPSN_HINT,
-    orderForSomeoneElseLink: 'Order a birth certificate for someone else',
-    orderForMyselfLink: 'Order a birth certificate for myself instead',
     feeCents: 2200,
   },
   marriage: {
@@ -18,8 +16,6 @@ export const CERT_CONTENT: Record<CertType, CertContent> = {
     intro:
       "Tell us whose certificate you need and we'll take it from there.",
     ppsnHint: SHARED_PPSN_HINT,
-    orderForSomeoneElseLink: 'Order a marriage certificate for someone else',
-    orderForMyselfLink: 'Order a marriage certificate for myself instead',
     feeCents: 2200,
   },
   death: {
