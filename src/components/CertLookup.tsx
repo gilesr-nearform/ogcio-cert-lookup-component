@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { ChangeEvent } from 'react';
 import {
   Alert,
   Button,
@@ -10,8 +9,6 @@ import {
   InputText,
   Link,
   Paragraph,
-  Select,
-  SelectItem,
   Spinner,
   Tag,
 } from '@govie-ds/react';
@@ -38,7 +35,7 @@ type Props = {
 };
 
 function defaultRequester(certType: CertType): LookupRequester {
-  return certType === 'marriage' ? 'self' : 'someone-else';
+  return certType === 'death' ? 'someone-else' : 'self';
 }
 
 function defaultPpsnFor(
@@ -60,7 +57,7 @@ export function CertLookup({
   onBack,
 }: Props) {
   const content = CERT_CONTENT[certType];
-  const showRequesterDropdown = certType !== 'death';
+  const showRequesterToggle = certType !== 'death';
 
   const initialRequester = defaultRequester(certType);
   const [requester, setRequester] = useState<LookupRequester>(initialRequester);
@@ -77,7 +74,7 @@ export function CertLookup({
   const { state, showLoadingIndicator, submittedPpsn, lookup, reset } =
     useLookup(certType);
 
-  const ppsnReadOnly = showRequesterDropdown && requester === 'self';
+  const ppsnReadOnly = showRequesterToggle && requester === 'self';
 
   useEffect(() => {
     if (!autoSubmit || !initialPpsn) return;
@@ -100,16 +97,15 @@ export function CertLookup({
   const consentVisible = hasSelection;
   const canProceed = hasSelection && consented;
 
-  function handleRequesterChange(e: ChangeEvent<HTMLSelectElement>) {
-    const next = e.target.value as LookupRequester;
+  function toggleRequester() {
+    const next: LookupRequester = requester === 'self' ? 'someone-else' : 'self';
     setRequester(next);
     setPpsnRevealed(false);
+    setPpsnError(null);
     if (next === 'self') {
       setPpsnValue(user.ppsn);
-      setPpsnError(null);
     } else {
       setPpsnValue('');
-      setPpsnError(null);
       requestAnimationFrame(() => ppsnInputRef.current?.focus());
     }
   }
@@ -171,28 +167,6 @@ export function CertLookup({
       </div>
 
       <div className="flex flex-col gap-xl w-full md:max-w-[459px]">
-        {showRequesterDropdown && (
-          <FormField label={{ text: 'Who is this certificate for?' }}>
-            <Select
-              value={requester}
-              onChange={handleRequesterChange}
-              disabled={isLoading}
-            >
-              {certType === 'birth' ? (
-                <>
-                  <SelectItem value="someone-else">Someone else</SelectItem>
-                  <SelectItem value="self">Yourself ({user.name})</SelectItem>
-                </>
-              ) : (
-                <>
-                  <SelectItem value="self">Yourself ({user.name})</SelectItem>
-                  <SelectItem value="someone-else">Someone else</SelectItem>
-                </>
-              )}
-            </Select>
-          </FormField>
-        )}
-
         <div className="flex flex-col gap-xs">
           <FormField
             label={{ text: 'PPSN' }}
@@ -225,6 +199,19 @@ export function CertLookup({
               }
             />
           </FormField>
+          {showRequesterToggle && !isLoading && (
+            <Link
+              href="#"
+              onClick={(e) => {
+                e.preventDefault();
+                toggleRequester();
+              }}
+            >
+              {requester === 'self'
+                ? content.orderForSomeoneElseLink
+                : content.orderForMyselfLink}
+            </Link>
+          )}
         </div>
 
         {showLoadingIndicator ? (
@@ -245,7 +232,7 @@ export function CertLookup({
               onClick={handleCheckAvailability}
               disabled={!canSubmit || state.status === 'found'}
             >
-              Check availability
+              Continue
             </Button>
             {state.status !== 'initial' && (
               <Link href="#" onClick={(e) => {

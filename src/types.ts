@@ -54,5 +54,7 @@ export type CertContent = {
   pageTitle: string;
   intro: string;
   ppsnHint: string;
+  orderForSomeoneElseLink?: string;
+  orderForMyselfLink?: string;
   feeCents: number;
 };
