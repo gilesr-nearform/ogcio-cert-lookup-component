@@ -144,6 +144,37 @@ export function CertLookup({
         <Paragraph>{content.intro}</Paragraph>
       </div>
 
+      {state.status === 'not-found' && (
+        <Alert
+          variant="warning"
+          title="We couldn’t find a matching certificate"
+        >
+          We couldn’t find a certificate registered to PPSN {submittedPpsn}.
+          Check the PPSN below and try again. Older records may not yet be in
+          the digital system — you can{' '}
+          <a
+            href="https://www.gov.ie/en/organisation/general-register-office/"
+            target="_blank"
+            rel="noreferrer"
+            className="underline"
+          >
+            contact the General Register Office
+          </a>{' '}
+          to request them directly.
+        </Alert>
+      )}
+
+      {state.status === 'error' && (
+        <Alert variant="danger" title="We can’t check this right now">
+          Something went wrong on our side. Try again with the PPSN below in a
+          few minutes. If the problem keeps happening,{' '}
+          <a href="#" className="underline">
+            contact us
+          </a>
+          .
+        </Alert>
+      )}
+
       <div className="flex flex-col gap-xl w-full md:max-w-[459px]">
         <div className="flex flex-col gap-lg">
           <FormField
@@ -244,36 +275,6 @@ export function CertLookup({
         </div>
       )}
 
-      {state.status === 'not-found' && (
-        <Alert
-          variant="warning"
-          title="We couldn’t find a matching certificate"
-        >
-          We couldn’t find a certificate registered to PPSN {submittedPpsn}.
-          Check the details and try again. Older records may not yet be in the
-          digital system — you can{' '}
-          <a
-            href="https://www.gov.ie/en/organisation/general-register-office/"
-            target="_blank"
-            rel="noreferrer"
-            className="underline"
-          >
-            contact the General Register Office
-          </a>{' '}
-          to request them directly.
-        </Alert>
-      )}
-
-      {state.status === 'error' && (
-        <Alert variant="danger" title="We can’t check this right now">
-          Something went wrong on our side. Please try again in a few minutes.
-          If the problem keeps happening,{' '}
-          <a href="#" className="underline">
-            contact us
-          </a>
-          .
-        </Alert>
-      )}
 
       {consentVisible && (
         <fieldset className="flex flex-col gap-md border-0 p-0 m-0">
