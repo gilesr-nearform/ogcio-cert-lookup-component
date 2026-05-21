@@ -90,6 +90,15 @@ export function CertLookup({
       setPpsnRevealed(false);
     }
     setPpsnValue(next);
+    // If the user edits the PPSN after a result has come back, clear the
+    // result so they're not staring at stale data while typing a new PPSN.
+    if (state.status !== 'initial' && state.status !== 'loading') {
+      reset();
+      setSelectedRecordId(null);
+      setSingleConfirmed(false);
+      setConsented(false);
+      setPpsnError(null);
+    }
   }
 
   function handlePpsnBlur() {
@@ -117,18 +126,6 @@ export function CertLookup({
     setSingleConfirmed(false);
     setConsented(false);
     void lookup(normalisePpsn(ppsnValue));
-  }
-
-  function handleSearchAgain() {
-    reset();
-    setSelectedRecordId(null);
-    setSingleConfirmed(false);
-    setConsented(false);
-    setPpsnError(null);
-    setPpsnValue('');
-    setPpsnAutoPopulated(false);
-    setPpsnRevealed(false);
-    requestAnimationFrame(() => ppsnInputRef.current?.focus());
   }
 
   function handleNext() {
@@ -198,29 +195,15 @@ export function CertLookup({
             <Spinner size="sm" inline />
             <span>Checking availability…</span>
           </div>
-        ) : state.status === 'error' ? (
-          <div className="flex flex-col items-start gap-md sm:flex-row sm:items-center">
-            <Button onClick={handleCheckAvailability} disabled={!canSubmit}>
-              Try again
-            </Button>
-          </div>
         ) : (
-          <div className="flex flex-col items-start gap-md sm:flex-row sm:justify-between sm:items-center">
+          <div className="flex flex-col items-start gap-md sm:flex-row sm:items-center">
             <Button
-              variant={state.status === 'found' ? 'secondary' : 'primary'}
+              variant="primary"
               onClick={handleCheckAvailability}
-              disabled={!canSubmit || state.status === 'found'}
+              disabled={!canSubmit}
             >
               Continue
             </Button>
-            {state.status !== 'initial' && (
-              <Link href="#" onClick={(e) => {
-                e.preventDefault();
-                handleSearchAgain();
-              }}>
-                Search again
-              </Link>
-            )}
           </div>
         )}
       </div>
@@ -230,7 +213,9 @@ export function CertLookup({
           {isMultipleResult ? (
             <>
               <Alert variant="success" title={`${records.length} certificates found`}>
-                Please select the one you’d like to order
+                Select the certificate you want to order to continue. If you
+                can’t see the one you’re looking for, enter a different PPSN
+                above and click Continue again.
               </Alert>
               <MultiResultSelector
                 records={records as MarriageRecord[]}
@@ -242,7 +227,9 @@ export function CertLookup({
           ) : (
             <>
               <Alert variant="success" title="Certificate found">
-                Please review and confirm the certificate details below
+                Review the certificate below and confirm to continue. If this
+                isn’t the one you’re looking for, enter a different PPSN above
+                and click Continue again.
               </Alert>
               <ResultCard
                 record={records[0]}
