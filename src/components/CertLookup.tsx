@@ -145,7 +145,7 @@ export function CertLookup({
       </div>
 
       <div className="flex flex-col gap-xl w-full md:max-w-[459px]">
-        <div className="flex flex-col gap-xs">
+        <div className="flex flex-col gap-lg">
           <FormField
             label={{ text: 'PPSN' }}
             hint={{ text: content.ppsnHint }}
