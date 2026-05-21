@@ -175,6 +175,21 @@ export function CertLookup({
         </Alert>
       )}
 
+      {state.status === 'found' && (
+        <Alert
+          variant="success"
+          title={
+            isMultipleResult
+              ? `${records.length} certificates found`
+              : 'Certificate found'
+          }
+        >
+          {isMultipleResult
+            ? 'Select the certificate you want to order from the list below to continue. If you can’t see the one you’re looking for, enter a different PPSN below and click Continue again.'
+            : 'Review the certificate further down the page and confirm to continue. If this isn’t the one you’re looking for, enter a different PPSN below and click Continue again.'}
+        </Alert>
+      )}
+
       <div className="flex flex-col gap-xl w-full md:max-w-[459px]">
         <div className="flex flex-col gap-lg">
           <FormField
@@ -242,35 +257,21 @@ export function CertLookup({
       {state.status === 'found' && (
         <div className="flex flex-col gap-lg">
           {isMultipleResult ? (
-            <>
-              <Alert variant="success" title={`${records.length} certificates found`}>
-                Select the certificate you want to order to continue. If you
-                can’t see the one you’re looking for, enter a different PPSN
-                above and click Continue again.
-              </Alert>
-              <MultiResultSelector
-                records={records as MarriageRecord[]}
-                user={user}
-                selectedId={selectedRecordId}
-                onSelect={setSelectedRecordId}
-              />
-            </>
+            <MultiResultSelector
+              records={records as MarriageRecord[]}
+              user={user}
+              selectedId={selectedRecordId}
+              onSelect={setSelectedRecordId}
+            />
           ) : (
-            <>
-              <Alert variant="success" title="Certificate found">
-                Review the certificate below and confirm to continue. If this
-                isn’t the one you’re looking for, enter a different PPSN above
-                and click Continue again.
-              </Alert>
-              <ResultCard
-                record={records[0]}
-                user={user}
-                selectable
-                selectionType="checkbox"
-                checked={singleConfirmed}
-                onSelect={() => setSingleConfirmed((v) => !v)}
-              />
-            </>
+            <ResultCard
+              record={records[0]}
+              user={user}
+              selectable
+              selectionType="checkbox"
+              checked={singleConfirmed}
+              onSelect={() => setSingleConfirmed((v) => !v)}
+            />
           )}
         </div>
       )}
