@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
-import { Button, Heading, Link, Paragraph } from '@govie-ds/react';
+import { Button, Heading, Paragraph } from '@govie-ds/react';
 import { AUTHENTICATED_USER } from '../../data/scenarios';
 import { maskIfNotUser } from '../../lib/maskName';
-import type { AuthUser, CertRecord, CertType } from '../../types';
+import type { AuthUser, CertRecord } from '../../types';
 import type { JourneyState } from '../../state/journey';
 
 type Props = {
@@ -12,12 +12,6 @@ type Props = {
 };
 
 type Row = { key: string; value: ReactNode };
-
-const CARD_TITLE: Record<CertType, string> = {
-  birth: 'Birth certificate details',
-  marriage: 'Marriage certificate details',
-  death: 'Death certificate details',
-};
 
 function nameParts(
   fullName: string,
@@ -106,18 +100,6 @@ export function StepConfirmation({ journey, onBack, onSubmit }: Props) {
       </div>
 
       <div className="border border-gray-200 rounded-sm overflow-hidden">
-        <div className="bg-gray-50 px-md py-md flex flex-col gap-sm border-b border-gray-200 sm:flex-row sm:items-center sm:justify-between">
-          <h3 className="font-bold text-xl m-0">{CARD_TITLE[record.certType]}</h3>
-          <Link
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              onBack();
-            }}
-          >
-            Edit
-          </Link>
-        </div>
         {rows.map((row, i) => (
           <div
             key={row.key}
