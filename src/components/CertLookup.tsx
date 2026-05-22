@@ -155,7 +155,9 @@ export function CertLookup({
         <hr className="border-0 border-t border-gray-200 w-full" />
         <Paragraph>Step 1 of 2</Paragraph>
         <div className="flex flex-col gap-sm max-w-[704px]">
-          <Heading as="h2">{content.subheading}</Heading>
+          <Heading as="h2" size="sm" className="font-normal">
+            {content.subheading}
+          </Heading>
           <Paragraph>{content.intro}</Paragraph>
         </div>
       </div>
