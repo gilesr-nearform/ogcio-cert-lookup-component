@@ -149,11 +149,15 @@ export function CertLookup({
     !isLoading && ppsnValue.trim().length > 0 && isValidPpsnFormat(ppsnValue);
 
   return (
-    <div className="flex flex-col gap-2xl max-w-[704px]">
-      <div className="flex flex-col gap-md">
-        <Paragraph>Step 1 of 2</Paragraph>
+    <div className="flex flex-col gap-2xl max-w-[960px]">
+      <div className="flex flex-col gap-lg">
         <Heading as="h1">{content.pageTitle}</Heading>
-        <Paragraph>{content.intro}</Paragraph>
+        <hr className="border-0 border-t border-gray-200 w-full" />
+        <Paragraph>Step 1 of 2</Paragraph>
+        <div className="flex flex-col gap-sm max-w-[704px]">
+          <Heading as="h2">{content.subheading}</Heading>
+          <Paragraph>{content.intro}</Paragraph>
+        </div>
       </div>
 
       {state.status === 'not-found' && (

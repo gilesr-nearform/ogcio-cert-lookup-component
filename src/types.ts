@@ -52,6 +52,7 @@ export type LookupState =
 
 export type CertContent = {
   pageTitle: string;
+  subheading: string;
   intro: string;
   ppsnHint: string;
   feeCents: number;
