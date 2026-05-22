@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Button, Heading, Paragraph } from '@govie-ds/react';
 import { AUTHENTICATED_USER } from '../../data/scenarios';
-import { CERT_TYPE_LABEL } from '../../data/content';
+import { CERT_CONTENT, CERT_TYPE_LABEL } from '../../data/content';
 import { maskIfNotUser } from '../../lib/maskName';
 import type { AuthUser, CertRecord } from '../../types';
 import type { JourneyState } from '../../state/journey';
@@ -67,7 +67,7 @@ export function StepConfirmation({ journey, onBack, onSubmit }: Props) {
   if (!record) {
     return (
       <div className="flex flex-col gap-md max-w-[704px]">
-        <Heading as="h1">Certificate lookup</Heading>
+        <Heading as="h1">{CERT_CONTENT[journey.certType].pageTitle}</Heading>
         <Paragraph>
           No certificate selected. Please go back and try again.
         </Paragraph>
@@ -89,7 +89,7 @@ export function StepConfirmation({ journey, onBack, onSubmit }: Props) {
   return (
     <div className="flex flex-col gap-2xl max-w-[960px]">
       <div className="flex flex-col gap-lg">
-        <Heading as="h1">Certificate lookup</Heading>
+        <Heading as="h1">{CERT_CONTENT[record.certType].pageTitle}</Heading>
         <hr className="border-0 border-t border-gray-200 w-full" />
         <div className="flex flex-col gap-sm">
           <Heading as="h2">Confirm certificate details</Heading>
