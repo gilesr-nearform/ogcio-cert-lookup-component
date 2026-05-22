@@ -30,6 +30,8 @@ export function useLookup(certType: CertType) {
       setShowLoadingIndicator(false);
 
       if (response.kind === 'error') setState({ status: 'error' });
+      else if (response.kind === 'rate-limited')
+        setState({ status: 'rate-limited' });
       else if (response.kind === 'not-found') setState({ status: 'not-found' });
       else setState({ status: 'found', records: response.records });
     },

@@ -39,6 +39,7 @@ export type CertRecord = BirthRecord | MarriageRecord | DeathRecord;
 export type LookupResponse =
   | { kind: 'found'; records: CertRecord[] }
   | { kind: 'not-found' }
+  | { kind: 'rate-limited' }
   | { kind: 'error' };
 
 export type LookupState =
@@ -46,6 +47,7 @@ export type LookupState =
   | { status: 'loading' }
   | { status: 'found'; records: CertRecord[] }
   | { status: 'not-found' }
+  | { status: 'rate-limited' }
   | { status: 'error' };
 
 export type CertContent = {

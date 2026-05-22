@@ -14,6 +14,7 @@ export const AUTHENTICATED_USER: AuthUser = {
 };
 
 export const SERVICE_UNAVAILABLE_PPSN = '0000000X';
+export const RATE_LIMITED_PPSN = '2222222X';
 
 const aoifeChildBirth: BirthRecord = {
   id: 'b-fiadh-2026',

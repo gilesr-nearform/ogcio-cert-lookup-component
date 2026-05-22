@@ -3,6 +3,7 @@ import { Button, Heading, Link, Paragraph } from '@govie-ds/react';
 import {
   AUTHENTICATED_USER,
   EXAMPLE_PPSN,
+  RATE_LIMITED_PPSN,
   SERVICE_UNAVAILABLE_PPSN,
 } from '../data/scenarios';
 
@@ -31,8 +32,13 @@ const unhappyPaths = [
     href: `/birth?ppsn=1111111X&autosubmit=1`,
   },
   {
+    label: `Multiple failed attempts (${RATE_LIMITED_PPSN})`,
+    description: 'Returns the amber “Multiple failed attempts detected” warning with the “1 attempt remaining” copy.',
+    href: `/birth?ppsn=${RATE_LIMITED_PPSN}&autosubmit=1`,
+  },
+  {
     label: `Service unavailable (${SERVICE_UNAVAILABLE_PPSN})`,
-    description: 'Returns the red “We can’t check this right now” panel with Try again.',
+    description: 'Returns the red “We can’t check this right now” panel.',
     href: `/birth?ppsn=${SERVICE_UNAVAILABLE_PPSN}&autosubmit=1`,
   },
 ];

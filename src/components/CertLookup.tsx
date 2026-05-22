@@ -150,8 +150,8 @@ export function CertLookup({
           title="We couldn’t find a matching certificate"
         >
           We couldn’t find a certificate registered to PPSN {submittedPpsn}.
-          Check the PPSN below and try again. Older records may not yet be in
-          the digital system — you can{' '}
+          Check the PPSN below and click Search again. Older records may not
+          yet be in the digital system — you can{' '}
           <a
             href="https://www.gov.ie/en/organisation/general-register-office/"
             target="_blank"
@@ -161,6 +161,20 @@ export function CertLookup({
             contact the General Register Office
           </a>{' '}
           to request them directly.
+        </Alert>
+      )}
+
+      {state.status === 'rate-limited' && (
+        <Alert
+          variant="warning"
+          title="Multiple failed attempts detected"
+        >
+          You have 1 attempt remaining before this service is temporarily
+          locked. If you’re unsure of the correct details, please{' '}
+          <a href="#" className="underline">
+            contact us
+          </a>{' '}
+          rather than guessing.
         </Alert>
       )}
 
@@ -185,8 +199,8 @@ export function CertLookup({
           }
         >
           {isMultipleResult
-            ? 'Select the certificate you want to order from the list below to continue. If you can’t see the one you’re looking for, enter a different PPSN below and click Continue again.'
-            : 'Review the certificate further down the page and confirm to continue. If this isn’t the one you’re looking for, enter a different PPSN below and click Continue again.'}
+            ? 'Select the certificate you want to order from the list below to continue. If you can’t see the one you’re looking for, enter a different PPSN below and click Search again.'
+            : 'Review the certificate further down the page and confirm to continue. If this isn’t the one you’re looking for, enter a different PPSN below and click Search again.'}
         </Alert>
       )}
 
@@ -248,7 +262,7 @@ export function CertLookup({
               onClick={handleCheckAvailability}
               disabled={!canSubmit}
             >
-              Continue
+              Search
             </Button>
           </div>
         )}

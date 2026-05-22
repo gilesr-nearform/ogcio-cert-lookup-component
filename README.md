@@ -38,6 +38,7 @@ link that one-clicks `5612908T` into the field):
 | `4421567S`  | Death — Maeve Catherine Murphy née Byrne                        |
 | `9087432P`  | Marriage — Cathal Brendan O’Sullivan (single, someone else)     |
 | `1111111X`  | No record found (any cert type)                                 |
+| `2222222X`  | Multiple failed attempts warning (1 attempt remaining)          |
 | `0000000X`  | Service unavailable error                                       |
 
 ## Stack

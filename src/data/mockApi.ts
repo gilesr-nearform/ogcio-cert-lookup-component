@@ -1,6 +1,10 @@
 import type { CertType, LookupResponse } from '../types';
 import { normalisePpsn } from '../lib/ppsn';
-import { findFixture, SERVICE_UNAVAILABLE_PPSN } from './scenarios';
+import {
+  findFixture,
+  RATE_LIMITED_PPSN,
+  SERVICE_UNAVAILABLE_PPSN,
+} from './scenarios';
 
 const API_DELAY_MS = 800;
 
@@ -13,6 +17,9 @@ export async function lookupCertificate(
 
   if (ppsn === SERVICE_UNAVAILABLE_PPSN) {
     return { kind: 'error' };
+  }
+  if (ppsn === RATE_LIMITED_PPSN) {
+    return { kind: 'rate-limited' };
   }
 
   const records = findFixture(certType, ppsn);
