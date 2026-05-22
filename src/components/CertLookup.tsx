@@ -101,6 +101,18 @@ export function CertLookup({
     }
   }
 
+  function handlePpsnInteract() {
+    // If the field holds the auto-populated PPSN (masked or revealed),
+    // clicking / focusing into it should clear it so the user can type a
+    // fresh value.
+    if (ppsnAutoPopulated) {
+      setPpsnValue('');
+      setPpsnAutoPopulated(false);
+      setPpsnRevealed(false);
+      setPpsnError(null);
+    }
+  }
+
   function handlePpsnBlur() {
     if (ppsnValue.trim() === '') {
       setPpsnError(null);
@@ -225,6 +237,8 @@ export function CertLookup({
                   : ppsnValue
               }
               onChange={(e) => handlePpsnChange(e.target.value)}
+              onFocus={handlePpsnInteract}
+              onClick={handlePpsnInteract}
               onBlur={handlePpsnBlur}
               readOnly={ppsnAutoPopulated && !ppsnRevealed}
               disabled={isLoading}
