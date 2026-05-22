@@ -149,18 +149,20 @@ export function CertLookup({
           variant="warning"
           title="We couldn’t find a matching certificate"
         >
-          We couldn’t find a certificate registered to PPSN {submittedPpsn}.
-          Check the PPSN below and click Search again. Older records may not
-          yet be in the digital system — you can{' '}
-          <a
-            href="https://www.gov.ie/en/organisation/general-register-office/"
-            target="_blank"
-            rel="noreferrer"
-            className="underline"
-          >
-            contact the General Register Office
-          </a>{' '}
-          to request them directly.
+          <p>
+            We couldn’t find a certificate registered to PPSN {submittedPpsn}.
+            Check the PPSN below and click Search again. Older records may not
+            yet be in the digital system — you can{' '}
+            <a
+              href="https://www.gov.ie/en/organisation/general-register-office/"
+              target="_blank"
+              rel="noreferrer"
+              className="underline"
+            >
+              contact the General Register Office
+            </a>{' '}
+            to request them directly.
+          </p>
         </Alert>
       )}
 
@@ -169,23 +171,27 @@ export function CertLookup({
           variant="warning"
           title="Multiple failed attempts detected"
         >
-          You have 1 attempt remaining before this service is temporarily
-          locked. If you’re unsure of the correct details, please{' '}
-          <a href="#" className="underline">
-            contact us
-          </a>{' '}
-          rather than guessing.
+          <p>
+            You have 1 attempt remaining before this service is temporarily
+            locked. If you’re unsure of the correct details, please{' '}
+            <a href="#" className="underline">
+              contact us
+            </a>{' '}
+            rather than guessing.
+          </p>
         </Alert>
       )}
 
       {state.status === 'error' && (
         <Alert variant="danger" title="We can’t check this right now">
-          Something went wrong on our side. Try again with the PPSN below in a
-          few minutes. If the problem keeps happening,{' '}
-          <a href="#" className="underline">
-            contact us
-          </a>
-          .
+          <p>
+            Something went wrong on our side. Try again with the PPSN below in
+            a few minutes. If the problem keeps happening,{' '}
+            <a href="#" className="underline">
+              contact us
+            </a>
+            .
+          </p>
         </Alert>
       )}
 
