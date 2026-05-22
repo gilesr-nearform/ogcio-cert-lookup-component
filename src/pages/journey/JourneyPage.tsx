@@ -65,10 +65,6 @@ function JourneyController({
     }));
   }
 
-  function handleTermsChange(accepted: boolean) {
-    setJourney((prev) => ({ ...prev, termsAccepted: accepted }));
-  }
-
   function handleSubmit() {
     setJourney((prev) => ({
       ...prev,
@@ -89,8 +85,6 @@ function JourneyController({
       <AppShell>
         <StepConfirmation
           journey={journey}
-          termsAccepted={journey.termsAccepted}
-          onTermsChange={handleTermsChange}
           onBack={() => backTo('lookup')}
           onSubmit={handleSubmit}
         />
