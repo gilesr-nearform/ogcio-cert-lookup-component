@@ -31,7 +31,7 @@ export const CERT_CONTENT: Record<CertType, CertContent> = {
 };
 
 export const CERT_TYPE_LABEL: Record<CertType, string> = {
-  birth: 'Birth Certificate',
-  marriage: 'Marriage Certificate',
-  death: 'Death Certificate',
+  birth: 'Birth certificate',
+  marriage: 'Marriage certificate',
+  death: 'Death certificate',
 };

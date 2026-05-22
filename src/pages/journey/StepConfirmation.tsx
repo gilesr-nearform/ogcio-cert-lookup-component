@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { Button, Heading, Paragraph } from '@govie-ds/react';
 import { AUTHENTICATED_USER } from '../../data/scenarios';
+import { CERT_TYPE_LABEL } from '../../data/content';
 import { maskIfNotUser } from '../../lib/maskName';
 import type { AuthUser, CertRecord } from '../../types';
 import type { JourneyState } from '../../state/journey';
@@ -29,6 +30,7 @@ function nameParts(
 function rowsForRecord(record: CertRecord, user: AuthUser): Row[] {
   const { first, last } = nameParts(record.fullName, user);
   const base: Row[] = [
+    { key: 'Certificate type', value: CERT_TYPE_LABEL[record.certType] },
     { key: 'PPSN number', value: record.ppsn },
     { key: 'First name', value: first },
     { key: 'Last name', value: last },
