@@ -325,7 +325,7 @@ export function CertLookup({
           </legend>
           <div className="flex flex-col gap-md bg-gray-100 px-md py-lg">
             <InputCheckbox
-              label="I agree to receive my certificate securely through MessagingIE."
+              label="I understand my certificate will be delivered as a secure message via MessagingIE. I agree to receive this message even if I have opted out of other government messages."
               checked={consented}
               onChange={(e) => setConsented(e.target.checked)}
             />

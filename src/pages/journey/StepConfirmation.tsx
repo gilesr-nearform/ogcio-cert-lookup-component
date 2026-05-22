@@ -92,7 +92,9 @@ export function StepConfirmation({ journey, onBack, onSubmit }: Props) {
         <Heading as="h1">{CERT_CONTENT[record.certType].pageTitle}</Heading>
         <hr className="border-0 border-t border-gray-200 w-full" />
         <div className="flex flex-col gap-sm">
-          <Heading as="h2">Confirm certificate details</Heading>
+          <Heading as="h2" size="sm" className="font-normal">
+            Confirm certificate details
+          </Heading>
           <Paragraph>
             Review your information before continuing to payment. After payment
             is received, a secure PDF will be sent via secure message within 3
